@@ -10,7 +10,7 @@ services:
       MYSQL_DATABASE: coffee_shop_db
       MYSQL_ROOT_PASSWORD: Bala@2004
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - coffee_data:/var/lib/mysql
 
