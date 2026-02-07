@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # Database Service
+  db:
+    image: mysql:8.0
+    container_name: coffee-shop-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: coffee_shop_db
+      MYSQL_ROOT_PASSWORD: Bala@2004
+    ports:
+      - "3306:3306"
+    volumes:
+      - coffee_data:/var/lib/mysql
+
+  # Backend Service
+  backend:
+    build: ./coffee-shop-backend
+    container_name: coffee-shop-backend
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/coffee_shop_db?createDatabaseIfNotExist=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=Bala@2004
+      - JWT_SECRET=CoffeeShopSecretKey2024VeryLongSecretKeyForJWTAuthentication123456789
+    depends_on:
+      - db
+
+  # Frontend Service
+  frontend:
+    build: ./coffee-shop-frontend
+    image: tanikibalaaditya/coffee-shop-frontend:1.0
+    container_name: coffee-shop-frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  coffee_data:
